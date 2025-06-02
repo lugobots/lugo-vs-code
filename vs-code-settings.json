@@ -1,0 +1,8 @@
+{
+  "workbench.colorTheme": "Default Dark+",
+  "security.workspace.trust.enabled": false,
+
+  "go.goplsPath": "/root/go/bin/gopls",
+  "go.toolsGopath": "/root/go",
+  "go.useLanguageServer": true
+}
