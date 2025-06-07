@@ -1,4 +1,8 @@
 #!/bin/bash
+
+# Suppress all output
+exec > /dev/null 2>&1
+
 cd /home/coder/project
 if [ -f requirements.txt ]; then
   python3.9 -m venv venv
@@ -18,7 +22,6 @@ fi
 if [ -z "$PORT" ]; then
   PORT=8082  # default value
 fi
-
 
 exec /usr/bin/code-server \
    --auth none \
