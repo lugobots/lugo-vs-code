@@ -2,6 +2,10 @@
   "workbench.colorTheme": "Default Dark+",
   "security.workspace.trust.enabled": false,
 
+  "python.defaultInterpreterPath": "./.studio/venv-lugo-vs/bin/python",
+  "python.pythonPath": ".studio/venv-lugo-vs",
+  "python.terminal.activateEnvironment": true,
+
   "go.goplsPath": "/root/go/bin/gopls",
   "go.toolsGopath": "/root/go",
   "go.useLanguageServer": true

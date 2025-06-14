@@ -1,5 +1,5 @@
 FROM codercom/code-server:4.100.2-bookworm
-
+WORKDIR /installing-dir
 # region Install Python stuff
 RUN sudo apt-get update && sudo apt-get install -y \
     build-essential \
@@ -13,31 +13,28 @@ RUN sudo apt-get update && sudo apt-get install -y \
     liblzma-dev \
     uuid-dev \
     curl \
-    make
+    make && \
 
 
-RUN sudo apt-get purge -y python3-minimal python3.11* && \
+    sudo apt-get purge -y python3-minimal python3.11* && \
     sudo apt-get autoremove -y && \
     sudo apt-get clean && \
-    sudo rm -rf /usr/lib/python3.11 /usr/lib/python3 /usr/bin/python3 /usr/bin/python3.11 /var/lib/apt/lists/*
-
+    sudo rm -rf /usr/lib/python3.11 /usr/lib/python3 /usr/bin/python3 /usr/bin/python3.11 /var/lib/apt/lists/* && \
 # Download, build and install Python 3.9
-RUN curl -O https://www.python.org/ftp/python/3.9.18/Python-3.9.18.tgz && \
+    curl -O https://www.python.org/ftp/python/3.9.18/Python-3.9.18.tgz && \
     tar -xzf Python-3.9.18.tgz && \
     cd Python-3.9.18 && \
     sudo ./configure --enable-optimizations && \
     sudo make -j"$(nproc)" && \
     sudo make altinstall && \
     cd .. && \
-    sudo rm -rf Python-3.9.18 Python-3.9.18.tgz
-
+    sudo rm -rf Python-3.9.18 Python-3.9.18.tgz && \
 # Create python and python3 shortcuts
-RUN sudo update-alternatives --install /usr/bin/python python /usr/local/bin/python3.9 1 && \
+    sudo update-alternatives --install /usr/bin/python python /usr/local/bin/python3.9 1 && \
     sudo update-alternatives --install /usr/bin/python3 python3 /usr/local/bin/python3.9 1 && \
-    sudo ln -sf /usr/local/bin/python3.9 /usr/bin/python
-
+    sudo ln -sf /usr/local/bin/python3.9 /usr/bin/python && \
 # Remove build dependencies and clean up
-RUN sudo apt-get purge -y \
+    sudo apt-get purge -y \
     build-essential \
     libssl-dev \
     zlib1g-dev \
@@ -50,24 +47,21 @@ RUN sudo apt-get purge -y \
     uuid-dev && \
     sudo apt-get autoremove -y && \
     sudo apt-get clean && \
-    sudo rm -rf /var/lib/apt/lists/*
-
-WORKDIR /installing-dir
-RUN sudo curl -sS https://bootstrap.pypa.io/get-pip.py | python3.9 && \
+    sudo rm -rf /var/lib/apt/lists/* && \
+    sudo curl -sS https://bootstrap.pypa.io/get-pip.py | python3.9 && \
     python3.9 -m ensurepip && \
     python3.9 -m pip install --upgrade pip  && \
     python3.9 -m pip install virtualenv
 
 WORKDIR /home/coder
-RUN code-server --install-extension ms-python.python
-RUN code-server --install-extension ms-toolsai.jupyter
-RUN mkdir -p /home/coder/.local/share/code-server/User
+RUN code-server --install-extension ms-python.python && \
+    code-server --install-extension ms-toolsai.jupyter &&  \
+    mkdir -p /home/coder/.local/share/code-server/User && \
 # endregion
-
 # region Install Go stuff
-RUN code-server --install-extension golang.Go
+    code-server --install-extension golang.Go && \
 # Install Go 1.21
-RUN wget https://go.dev/dl/go1.21.0.linux-amd64.tar.gz && \
+    wget https://go.dev/dl/go1.21.0.linux-amd64.tar.gz && \
     rm -rf /usr/local/go && \
     sudo tar -C /usr/local -xzf go1.21.0.linux-amd64.tar.gz && \
     sudo rm go1.21.0.linux-amd64.tar.gz
@@ -94,6 +88,8 @@ RUN sudo curl -fsSL https://deb.nodesource.com/setup_18.x | sudo bash - \
 
 COPY config.yaml /home/coder/.config/code-server/config.yaml
 COPY vs-code-settings.json /home/coder/.local/share/code-server/User/settings.json
+#COPY install-dependencies.sh /home/coder/install-dependencies.sh
+#COPY tasks.json /home/coder/project/.vscode/tasks.json
 COPY entrypoint.sh /entrypoint.sh
 RUN sudo chmod +x /entrypoint.sh
 
