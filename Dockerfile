@@ -69,13 +69,6 @@ RUN code-server --install-extension ms-python.python && \
 # Set Go environment
 ENV PATH="/usr/local/go/bin:$PATH"
 
-# pre install libs that will be require by Go extensions to enable auto complete
-RUN go install golang.org/x/tools/gopls@v0.18.1 && \
-    go install honnef.co/go/tools/cmd/staticcheck@v0.6.1
-
-# basic dependencies to make GO projects to load faster
-COPY go.mod ./
-RUN go mod download
 # endregion
 
 # region Nodejs Stuff
@@ -88,8 +81,8 @@ RUN sudo curl -fsSL https://deb.nodesource.com/setup_18.x | sudo bash - \
 
 COPY config.yaml /home/coder/.config/code-server/config.yaml
 COPY vs-code-settings.json /home/coder/.local/share/code-server/User/settings.json
-#COPY install-dependencies.sh /home/coder/install-dependencies.sh
-#COPY tasks.json /home/coder/project/.vscode/tasks.json
+RUN sudo chown coder /home/coder/.local/share/code-server/User/settings.json
+
 COPY entrypoint.sh /entrypoint.sh
 RUN sudo chmod +x /entrypoint.sh
 

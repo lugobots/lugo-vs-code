@@ -1,6 +1,7 @@
 {
   "workbench.colorTheme": "Default Dark+",
   "security.workspace.trust.enabled": false,
+  "files.autoSave": "onFocusChange",
 
   "python.defaultInterpreterPath": "./.studio/venv-lugo-vs/bin/python",
   "python.pythonPath": ".studio/venv-lugo-vs",

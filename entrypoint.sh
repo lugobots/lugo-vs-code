@@ -1,7 +1,6 @@
 #!/bin/bash
 
-# Suppress all output
-exec > /dev/null 2>&1
+
 
 cd /home/coder/project
 
@@ -31,6 +30,9 @@ while true; do
 #  echo "No project found yet. Install a Lugo Bot project"
   sleep 1
 done
+
+# Suppress all output
+exec > /dev/null 2>&1
 
 if [ -z "$PORT" ]; then
   PORT=8082  # default value
