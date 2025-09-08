@@ -23,8 +23,3 @@ ENV PATH=$PATH:$GOPATH/bin
 
 # Install VS Code Go extension
 RUN code-server --install-extension golang.go
-
-# Default workdir
-WORKDIR /home/coder/project
-
-ENTRYPOINT ["/entrypoint.sh"]
