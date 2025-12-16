@@ -15,7 +15,6 @@
 
   ],
 
-  "go.goplsPath": "/root/go/bin/gopls",
   "go.toolsGopath": "/root/go",
   "go.useLanguageServer": true
 }
