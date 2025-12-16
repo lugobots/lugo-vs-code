@@ -1,4 +1,5 @@
-FROM codercom/code-server:4.100.2-bookworm
+FROM lugo-vs
+
 WORKDIR /installing-dir
 # region Install Python stuff
 RUN sudo apt-get update && sudo apt-get install -y \
@@ -66,8 +67,15 @@ RUN code-server --install-extension ms-python.python && \
     sudo tar -C /usr/local -xzf go1.21.0.linux-amd64.tar.gz && \
     sudo rm go1.21.0.linux-amd64.tar.gz
 
+
 # Set Go environment
 ENV PATH="/usr/local/go/bin:$PATH"
+
+RUN go install golang.org/x/tools/gopls@v0.21.0 \
+    && go install github.com/go-delve/delve/cmd/dlv@latest \
+    && go install honnef.co/go/tools/cmd/staticcheck@latest \
+    && go install golang.org/x/tools/cmd/goimports@latest
+
 
 # endregion
 
