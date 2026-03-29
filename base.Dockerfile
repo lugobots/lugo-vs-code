@@ -1,6 +1,6 @@
 FROM codercom/code-server:4.100.2-bookworm
 
-USER coder
+USER root
 ENV HOME=/home/coder
 # region Install Go stuff
 #RUN code-server --install-extension golang.Go && \
@@ -18,10 +18,12 @@ ENV HOME=/home/coder
 COPY logger /usr/local/bin/logger
 COPY config.yaml /home/coder/.config/code-server/config.yaml
 COPY vs-code-settings.json /home/coder/.local/share/code-server/User/settings.json
-RUN sudo chown coder -R /home/coder
+RUN chown coder -R /home/coder
 
 COPY entrypoint.sh /entrypoint.sh
-RUN sudo chmod +x /entrypoint.sh
+RUN chmod +x /entrypoint.sh
+
+USER coder
 
 WORKDIR /home/coder/project
 ENTRYPOINT ["/entrypoint.sh"]
