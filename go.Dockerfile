@@ -13,10 +13,11 @@ ENV PATH=$GOPATH/bin:/usr/local/go/bin:$PATH
 
 
 # Install Go tools required by VS Code
-RUN go install golang.org/x/tools/gopls@latest \
+RUN go install golang.org/x/tools/gopls@v0.21.0 \
     && go install github.com/go-delve/delve/cmd/dlv@latest \
     && go install honnef.co/go/tools/cmd/staticcheck@latest \
-    && go install golang.org/x/tools/cmd/goimports@latest
+    && go install golang.org/x/tools/cmd/goimports@latest \
+    && go install github.com/uudashr/gopkgs/v2/cmd/gopkgs
 
 # Ensure Go tools are available in PATH
 ENV PATH=$PATH:$GOPATH/bin
